@@ -1,0 +1,202 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="light">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>NagarVaani — Civic Grievance Portal</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@600;700&family=DM+Sans:wght@300;400;500;600&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="style.css" />
+</head>
+<body>
+
+<!-- ───────────────────────── NAVBAR ───────────────────────── -->
+<nav class="navbar">
+  <div class="nav-brand">
+    <span class="brand-icon">🏛️</span>
+    <span class="brand-name">NagarVaani</span>
+  </div>
+  <div class="nav-right">
+    <div class="theme-toggle">
+      <span class="toggle-label">☀️</span>
+      <label class="switch">
+        <input type="checkbox" id="themeToggle" />
+        <span class="slider-thumb"></span>
+      </label>
+      <span class="toggle-label">🌙</span>
+    </div>
+  </div>
+</nav>
+
+<!-- ───────────────────────── HERO ───────────────────────── -->
+<section class="hero" id="homePage">
+  <div class="hero-bg-shapes">
+    <div class="shape shape-1"></div>
+    <div class="shape shape-2"></div>
+    <div class="shape shape-3"></div>
+  </div>
+  <div class="hero-content">
+    <div class="hero-tag">Your Voice Matters</div>
+    <h1 class="hero-title">Speak Up.<br/>We'll Listen.</h1>
+    <p class="hero-sub">Report civic issues — water logging, electricity outages, road damage & more — straight to your local administration.</p>
+    <div class="hero-buttons">
+      <button class="btn-primary" onclick="showPage('loginPage', 'citizen')">
+        <span>🙍 Citizen Login</span>
+      </button>
+      <button class="btn-outline" onclick="showPage('loginPage', 'admin')">
+        <span>🛡️ Admin Login</span>
+      </button>
+    </div>
+  </div>
+  <div class="hero-illustration">
+    <div class="city-card">
+      <div class="city-stat"><span class="stat-num" id="heroTotal">0</span><span class="stat-lbl">Issues Filed</span></div>
+      <div class="city-stat"><span class="stat-num" id="heroResolved">0</span><span class="stat-lbl">Resolved</span></div>
+      <div class="city-stat"><span class="stat-num" id="heroProgress">0</span><span class="stat-lbl">In Progress</span></div>
+    </div>
+  </div>
+</section>
+
+<!-- ───────────────────────── LOGIN PAGE ───────────────────────── -->
+<section class="login-page hidden" id="loginPage">
+  <div class="login-card">
+    <div class="login-header">
+      <div class="login-icon" id="loginIcon">🙍</div>
+      <h2 class="login-title" id="loginTitle">Citizen Login</h2>
+      <p class="login-sub" id="loginSub">Sign in to report issues in your locality</p>
+    </div>
+    <div class="form-group">
+      <label class="form-label">Username</label>
+      <input type="text" id="loginUser" class="form-input" placeholder="Enter your username" />
+    </div>
+    <div class="form-group">
+      <label class="form-label">Password</label>
+      <input type="password" id="loginPass" class="form-input" placeholder="Enter your password" />
+    </div>
+    <p class="login-err hidden" id="loginErr">❌ Invalid credentials. Please try again.</p>
+    <button class="btn-primary full-width" id="loginBtn" onclick="doLogin()">Sign In</button>
+    <button class="btn-ghost" onclick="showPage('homePage')">← Back to Home</button>
+  </div>
+</section>
+
+<!-- ───────────────────────── CITIZEN DASHBOARD ───────────────────────── -->
+<section class="dashboard hidden" id="citizenPage">
+  <div class="dash-header">
+    <div>
+      <h2 class="dash-title">Hello, <span id="citizenName">Citizen</span> 👋</h2>
+      <p class="dash-sub">File a new grievance or track your existing ones.</p>
+    </div>
+    <div class="dash-header-right">
+      <div class="theme-toggle inline-toggle">
+        <span class="toggle-label">☀️</span>
+        <label class="switch">
+          <input type="checkbox" id="themeToggle2" />
+          <span class="slider-thumb"></span>
+        </label>
+        <span class="toggle-label">🌙</span>
+      </div>
+      <button class="btn-logout" onclick="logout()">Logout</button>
+    </div>
+  </div>
+
+  <!-- File Grievance -->
+  <div class="card grievance-card">
+    <h3 class="card-title">📝 File a New Grievance</h3>
+    <div class="form-row">
+      <div class="form-group">
+        <label class="form-label">Category</label>
+        <select class="form-input" id="issueCategory">
+          <option value="">Select issue type…</option>
+          <option>🌊 Water Logging</option>
+          <option>⚡ Electricity Issue</option>
+          <option>🛣️ Road Damage</option>
+          <option>🗑️ Garbage Collection</option>
+          <option>💧 Water Supply</option>
+          <option>🌳 Tree / Fallen Branch</option>
+          <option>🚰 Sewage Problem</option>
+          <option>🔆 Street Light</option>
+          <option>📶 Other</option>
+        </select>
+      </div>
+      <div class="form-group">
+        <label class="form-label">Locality / Area</label>
+        <input type="text" id="issueLocality" class="form-input" placeholder="e.g., Andheri West, Mumbai" />
+      </div>
+    </div>
+    <div class="form-group">
+      <label class="form-label">Describe your issue <span class="hint">(Any language — we'll translate)</span></label>
+      <textarea id="issueDesc" class="form-textarea" placeholder="Describe the problem in detail… आप हिंदी में भी लिख सकते हैं।" rows="5"></textarea>
+    </div>
+
+    <!-- Location -->
+    <div class="location-bar" id="locationBar">
+      <span class="location-status" id="locationStatus">📍 Location not added</span>
+      <button class="btn-location" onclick="addLocation()">Add My Location</button>
+    </div>
+
+    <div class="form-actions">
+      <button class="btn-primary" onclick="submitGrievance()" id="submitBtn">
+        <span id="submitBtnText">Submit Grievance</span>
+      </button>
+    </div>
+
+    <div class="success-toast hidden" id="successToast">
+      ✅ Grievance submitted successfully! We'll look into it soon.
+    </div>
+  </div>
+
+  <!-- My Grievances -->
+  <div class="card">
+    <h3 class="card-title">📋 My Grievances</h3>
+    <div id="myGrievancesList" class="grievances-list">
+      <p class="empty-state">No grievances filed yet.</p>
+    </div>
+  </div>
+</section>
+
+<!-- ───────────────────────── ADMIN DASHBOARD ───────────────────────── -->
+<section class="dashboard hidden" id="adminPage">
+  <div class="dash-header">
+    <div>
+      <h2 class="dash-title">Admin Dashboard 🛡️</h2>
+      <p class="dash-sub">Manage and resolve citizen grievances.</p>
+    </div>
+    <div class="dash-header-right">
+      <div class="theme-toggle inline-toggle">
+        <span class="toggle-label">☀️</span>
+        <label class="switch">
+          <input type="checkbox" id="themeToggle3" />
+          <span class="slider-thumb"></span>
+        </label>
+        <span class="toggle-label">🌙</span>
+      </div>
+      <button class="btn-logout" onclick="logout()">Logout</button>
+    </div>
+  </div>
+
+  <!-- Stats -->
+  <div class="stats-row">
+    <div class="stat-card stat-total"><div class="stat-icon">📁</div><div><div class="stat-big" id="adminTotal">0</div><div class="stat-name">Total</div></div></div>
+    <div class="stat-card stat-reg"><div class="stat-icon">🔵</div><div><div class="stat-big" id="adminReg">0</div><div class="stat-name">Registered</div></div></div>
+    <div class="stat-card stat-prog"><div class="stat-icon">🟡</div><div><div class="stat-big" id="adminProg">0</div><div class="stat-name">In Progress</div></div></div>
+    <div class="stat-card stat-res"><div class="stat-icon">🟢</div><div><div class="stat-big" id="adminRes">0</div><div class="stat-name">Resolved</div></div></div>
+  </div>
+
+  <!-- Filter -->
+  <div class="filter-row">
+    <button class="filter-btn active" data-filter="all" onclick="filterGrievances(this, 'all')">All</button>
+    <button class="filter-btn" data-filter="Registered" onclick="filterGrievances(this, 'Registered')">Registered</button>
+    <button class="filter-btn" data-filter="In Progress" onclick="filterGrievances(this, 'In Progress')">In Progress</button>
+    <button class="filter-btn" data-filter="Resolved" onclick="filterGrievances(this, 'Resolved')">Resolved</button>
+    <input type="text" class="search-input" placeholder="🔍 Search by user or keyword…" oninput="searchGrievances(this.value)" />
+  </div>
+
+  <!-- All Grievances -->
+  <div id="adminGrievancesList" class="grievances-list admin-list">
+    <p class="empty-state">No grievances yet.</p>
+  </div>
+</section>
+
+<script src="app.js"></script>
+</body>
+</html>
